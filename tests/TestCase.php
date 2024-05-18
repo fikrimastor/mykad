@@ -2,9 +2,9 @@
 
 namespace FikriMastor\MyKad\Tests;
 
+use FikriMastor\MyKad\MyKadServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use FikriMastor\MyKad\MyKadServiceProvider;
 
 class TestCase extends Orchestra
 {

@@ -2,9 +2,9 @@
 
 namespace FikriMastor\MyKad;
 
+use FikriMastor\MyKad\Commands\MyKadCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use FikriMastor\MyKad\Commands\MyKadCommand;
 
 class MyKadServiceProvider extends PackageServiceProvider
 {
