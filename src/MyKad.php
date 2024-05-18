@@ -6,23 +6,16 @@ class MyKad
 {
     /**
      * Gender
-     *
-     * @var string|null $gender
      */
     protected ?string $gender = null;
 
     /**
      *  Date of Birth
-     *
-     * @var int|bool
      */
     protected int|bool $dob = false;
 
     /**
      * Extract MyKad Number
-     *
-     * @param  string  $myKad
-     * @return string
      */
     private function extractMyKad(string $myKad): string
     {
@@ -31,9 +24,6 @@ class MyKad
 
     /**
      * Get MyKad Length
-     *
-     * @param  string  $myKad
-     * @return int
      */
     private function myKadLength(string $myKad): int
     {
@@ -42,9 +32,6 @@ class MyKad
 
     /**
      * Check MyKad Length is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function myKadLengthIsValid(string $myKad): bool
     {
@@ -54,10 +41,9 @@ class MyKad
     /**
      * Process the IC number
      *
-     * @access    private
      * @param  string  $myKad  The raw IC number
      * @param  string  $dateFormat  The date format to use
-     * @return    array    The detail
+     * @return array The detail
      */
     private function getData(string $myKad, string $dateFormat): array
     {
@@ -73,18 +59,17 @@ class MyKad
         return [
             'date_of_birth' => $this->dobHumanReadable($dateFormat), // get the date of birth
             'state' => $this->getState($sections['state']), // get the state
-            'gender' => $this->gender // get the gender
+            'gender' => $this->gender, // get the gender
         ];
     }
 
     /**
      * Get the date of birth in human readable format
      *
-     * @access    private
      * @param  string|null  $dateFormat  The date format
-     * @return    string|bool    The date of birth
+     * @return string|bool The date of birth
      */
-    private function dobHumanReadable(string|null $dateFormat = 'j F Y'): string|bool
+    private function dobHumanReadable(?string $dateFormat = 'j F Y'): string|bool
     {
         return $this->dob ? date($dateFormat, (int) $this->dob) : $this->dob;
     }
@@ -92,17 +77,16 @@ class MyKad
     /**
      * Splitting the code given to the proper sections
      *
-     * @access    private
      * @param  string|null  $code  The IC number
-     * @return    array    The sections
+     * @return array The sections
      */
-    private function split(string|null $code = null): array
+    private function split(?string $code = null): array
     {
         $output = [];
 
-        if (!empty($code)) {
+        if (! empty($code)) {
             // the output array
-            $output = array();
+            $output = [];
 
             // split the number into 2 sections
             $sect = str($code)->split(6);
@@ -118,21 +102,19 @@ class MyKad
 
             // then, from the last array item in $code, get
             // the last item to be use when checking for gender
-            $output['code'] = $other[1] . $other[2];
+            $output['code'] = $other[1].$other[2];
         }
 
         return $output;
     }
 
-
     /**
      * Get state based on the 2 digits code
      *
-     * @access    private
      * @param  string|null  $code  The 2 digits state code
-     * @return    string    The state name
+     * @return string The state name
      */
-    private function getState(string|null $code = null): string
+    private function getState(?string $code = null): string
     {
         return match ($code) {
             '01', '21', '22', '23', '24' => 'Johor',
@@ -155,32 +137,28 @@ class MyKad
         };
     }
 
-
     /**
      * Get gender based on the last 4 digits code
      *
-     * @access    private
      * @param  string|null  $code  The 4 digits IC number
      */
-    private function getGender(string|null $code = null)
+    private function getGender(?string $code = null)
     {
-        if (!empty($code)) {
+        if (! empty($code)) {
             // basically, the last digit will determine the
             // gender; odd for Male and even for Female
             $this->gender = $code % 2 === 0 ? 'Female' : 'Male';
         }
     }
 
-
     /**
      * Get date of birth from the first 6 digits
      *
-     * @access    private
      * @param  string|null  $code  The first 6 digits IC number
      */
-    private function getDob(string|null $code = null): void
+    private function getDob(?string $code = null): void
     {
-        if (!empty($code)) {
+        if (! empty($code)) {
             // split it into 3 section, 2 digits per section
             $dob = str($code)->split(2);
 
@@ -202,7 +180,7 @@ class MyKad
 
             // now convert it into the string and assign it to
             // our variable
-            $this->dob = strtotime($year . '-' . $month . '-' . $day);
+            $this->dob = strtotime($year.'-'.$month.'-'.$day);
         }
     }
 }
