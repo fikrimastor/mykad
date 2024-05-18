@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace FikriMastor\MyKad\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class MyKadCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'mykad';
 
     public $description = 'My command';
 
