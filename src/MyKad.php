@@ -26,9 +26,6 @@ class MyKad
 
     /**
      * Sanitize MyKad Details
-     *
-     * @param  string  $myKad
-     * @return string
      */
     public function sanitize(string $myKad): string
     {
@@ -37,9 +34,6 @@ class MyKad
 
     /**
      * Get MyKad Length
-     *
-     * @param  string  $myKad
-     * @return int
      */
     private function myKadLength(string $myKad): int
     {
@@ -48,9 +42,6 @@ class MyKad
 
     /**
      * Check MyKad Length is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function lengthIsValid(string $myKad): bool
     {
@@ -61,9 +52,6 @@ class MyKad
 
     /**
      * Check MyKad Character is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function characterIsValid(string $myKad): bool
     {
@@ -72,9 +60,6 @@ class MyKad
 
     /**
      * Check MyKad birth date is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function birthDateIsValid(string $myKad): bool
     {
@@ -84,7 +69,7 @@ class MyKad
             $dob = $this->getDob($extractedData['dob']);
 
             // if the date is not empty, then check if it is valid date
-            return !empty($dob) && checkdate($dob['month'], $dob['day'], $dob['year']);
+            return ! empty($dob) && checkdate($dob['month'], $dob['day'], $dob['year']);
         }
 
         return false;
@@ -92,9 +77,6 @@ class MyKad
 
     /**
      * Check MyKad birth date is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function stateIsValid(string $myKad): bool
     {
@@ -105,17 +87,13 @@ class MyKad
 
     /**
      * Get the date of birth from IC number
-     *
-     * @param  string  $myKad
-     * @param  string|null  $dateFormat
-     * @return array|bool
      */
-    public function extractMyKad(string $myKad, string|null $dateFormat = 'j F Y'): array|bool
+    public function extractMyKad(string $myKad, ?string $dateFormat = 'j F Y'): array|bool
     {
         // sanitize characters
         $myKadNo = $this->sanitize($myKad);
 
-        if (!empty($myKadNo)) {
+        if (! empty($myKadNo)) {
             // if the numbers is less than 12 digits
             if (! $this->lengthIsValid($myKadNo)) {
                 return false;
