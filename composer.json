@@ -17,11 +17,8 @@
     ],
     "require": {
         "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^10.0||^11.0",
-        "illuminate/console": "^10.0||^11.0",
-        "illuminate/support": "^10.0||^11.0",
-        "illuminate/validation": "^10.0||^11.0"
+        "nesbot/carbon": "^2.67.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -82,7 +79,6 @@
             }
         }
     },
-    "version": "0.0.1",
     "minimum-stability": "dev",
     "prefer-stable": true
 }
