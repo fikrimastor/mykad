@@ -174,35 +174,6 @@ class MyKad
 
     /**
      * Get state based on the 2 digits code
-     *
-     * @param  string|null  $code  The 2 digits state code
-     * @return string The state name
-     */
-    private function getState(?string $code = null): string
-    {
-        return match ($code) {
-            '01', '21', '22', '23', '24' => 'Johor',
-            '02', '25', '26', '27' => 'Kedah',
-            '03', '28', '29' => 'Kelantan',
-            '04', '30' => 'Melaka',
-            '05', '31', '59' => 'Negeri Sembilan',
-            '06', '32', '33' => 'Pahang',
-            '07', '34', '35' => 'Penang',
-            '08', '36', '37', '38', '39' => 'Perak',
-            '09', '40' => 'Perlis',
-            '10', '41', '42', '43', '44' => 'Selangor',
-            '11', '45', '46' => 'Terengganu',
-            '12', '47', '48', '49' => 'Sabah',
-            '13', '50', '51', '52', '53' => 'Sarawak',
-            '14', '54', '55', '56', '57' => 'Wilayah Persekutuan Kuala Lumpur',
-            '15', '58' => 'Wilayah Persekutuan Labuan',
-            '16' => 'Wilayah Persekutuan Putrajaya',
-            default => 'Others',
-        };
-    }
-
-    /**
-     * Get state based on the 2 digits code
      * Source: https://www.jpn.gov.my/my/kod-negeri
      *
      * @param  string  $code  The 2 digits state code
