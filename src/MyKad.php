@@ -3,6 +3,7 @@
 namespace FikriMastor\MyKad;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class MyKad
 {
@@ -17,27 +18,11 @@ class MyKad
     protected int|bool $dob = false;
 
     /**
-     * Extract MyKad Number
-     */
-    private function trimReplace(string $myKad): string
-    {
-        return str(trim($myKad))->replaceMatches('/[^a-zA-Z0-9]/', '');
-    }
-
-    /**
      * Sanitize MyKad Details
      */
     public function sanitize(string $myKad): string
     {
         return $this->trimReplace($myKad);
-    }
-
-    /**
-     * Get MyKad Length
-     */
-    private function myKadLength(string $myKad): int
-    {
-        return strlen($this->sanitize($myKad));
     }
 
     /**
@@ -73,34 +58,39 @@ class MyKad
     }
 
     /**
-     * Check MyKad birth date is Valid
+     * Check MyKad state is Valid
      */
     public function stateIsValid(string $myKad): bool
     {
-        $extractedData = $this->extractMyKad($myKad);
+        $extractedData = $this->extract($myKad);
 
         return is_array($extractedData) && Arr::exists($extractedData, 'state');
     }
 
     /**
-     * Get the date of birth from IC number
+     * Extract the details from the MyKad
      */
-    public function extractMyKad(string $myKad, ?string $dateFormat = 'j F Y'): array|bool
+    public function extract(string $myKad, ?string $dateFormat = 'j F Y'): array|bool
     {
         // sanitize characters
         $myKadNo = $this->sanitize($myKad);
 
         // if the numbers is 12 digits
-        if (! empty($myKadNo) && $this->lengthIsValid($myKadNo)) {
-
-            return $this->getData($myKadNo, $dateFormat);
-        }
-
-        return false;
+        return ! empty($myKadNo) && $this->lengthIsValid($myKadNo)
+            ? $this->getData($myKadNo, $dateFormat)
+            : false;
     }
 
     /**
-     * Process the IC number
+     * Replace the unwanted characters
+     */
+    private function trimReplace(string $myKad): string
+    {
+        return Str::replaceMatches('/[^a-zA-Z0-9]/', '', trim($myKad));
+    }
+
+    /**
+     * Process the IC number to get the details
      *
      * @param  string  $myKad  The raw IC number
      * @param  string  $dateFormat  The date format to use
@@ -111,21 +101,39 @@ class MyKad
         // send it to function to split it
         $extractedData = $this->split($myKad);
 
-        if (Arr::exists($extractedData, 'dob')) {
-            // get the DOB
-            $this->getDob($extractedData['dob']);
+        return Arr::exists($extractedData, 'dob')
+            ? $this->processMyKad($extractedData, $dateFormat)
+            : false;
+    }
 
-            // get the gender
-            $this->getGender($extractedData['code']);
+    /**
+     * Get MyKad Length
+     */
+    private function myKadLength(string $myKad): int
+    {
+        return strlen($this->sanitize($myKad));
+    }
 
-            return [
-                'date_of_birth' => $this->dobHumanReadable($dateFormat), // get the date of birth
-                'state' => $this->getStateByCode($extractedData['state']), // get the state
-                'gender' => $this->gender, // get the gender
-            ];
-        }
+    /**
+     * Process the MyKad
+     *
+     * @param  array  $extractedCode  The extracted code
+     * @param  string  $dateFormat  The date format
+     * @return array The details
+     */
+    private function processMyKad(array $extractedCode, string $dateFormat): array
+    {
+        // get the DOB
+        $this->getDob($extractedCode['dob']);
 
-        return false;
+        // get the gender
+        $this->getGender($extractedCode['code']);
+
+        return [
+            'date_of_birth' => $this->dobHumanReadable($dateFormat), // get the date of birth
+            'state' => $this->getStateByCode($extractedCode['state']), // get the state
+            'gender' => $this->gender, // get the gender
+        ];
     }
 
     /**
@@ -195,10 +203,7 @@ class MyKad
      */
     private function getGender(?string $code = null)
     {
-        $number = (int) $code;
-
-        // check if the code is an integer
-        if (! empty($code) && is_int($number)) {
+        if (! empty($number = (int) $code)) {
             // basically, the last digit will determine the
             // gender; odd for Male and even for Female
             $this->gender = $number % 2 === 0 ? 'Female' : 'Male';

@@ -3,7 +3,7 @@
 use FikriMastor\MyKad\Facades\MyKad;
 
 const TEST_MYKAD = '010101-01-0101';
-const TEST_MYKAD_INVALID = '010101-01-01';
+const TEST_MYKAD_INVALID = '01010-01-01';
 
 it('can test mykad length is valid', function () {
 
@@ -21,14 +21,14 @@ it('can test mykad length is invalid', function () {
 
 it('can test mykad output extraction is valid array', function () {
 
-    $mykad = MyKad::extractMyKad(TEST_MYKAD);
+    $mykad = MyKad::extract(TEST_MYKAD);
 
     expect($mykad)->toBeArray(TEST_MYKAD.' input is valid');
 });
 
 it('can test mykad output extraction is invalid array', function () {
 
-    $mykad = MyKad::extractMyKad(TEST_MYKAD_INVALID);
+    $mykad = MyKad::extract(TEST_MYKAD_INVALID);
 
     expect($mykad)->toBeFalse(TEST_MYKAD_INVALID.' input is invalid');
 });
