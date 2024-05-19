@@ -45,9 +45,7 @@ class MyKad
      */
     public function lengthIsValid(string $myKad): bool
     {
-        $number = $this->sanitize($myKad);
-
-        return $this->myKadLength($number) === 12;
+        return $this->myKadLength($myKad) === 12;
     }
 
     /**
@@ -92,11 +90,8 @@ class MyKad
         // sanitize characters
         $myKadNo = $this->sanitize($myKad);
 
-        if (! empty($myKadNo)) {
-            // if the numbers is less than 12 digits
-            if (! $this->lengthIsValid($myKadNo)) {
-                return false;
-            }
+        // if the numbers is 12 digits
+        if (! empty($myKadNo) && $this->lengthIsValid($myKadNo)) {
 
             return $this->getData($myKadNo, $dateFormat);
         }
@@ -109,24 +104,28 @@ class MyKad
      *
      * @param  string  $myKad  The raw IC number
      * @param  string  $dateFormat  The date format to use
-     * @return array The detail
+     * @return array|bool The detail
      */
-    private function getData(string $myKad, string $dateFormat): array
+    private function getData(string $myKad, string $dateFormat): array|bool
     {
         // send it to function to split it
-        $sections = $this->split($myKad);
+        $extractedData = $this->split($myKad);
 
-        // get the DOB
-        $this->getDob($sections['dob']);
+        if (Arr::exists($extractedData, 'dob')) {
+            // get the DOB
+            $this->getDob($extractedData['dob']);
 
-        // get the gender
-        $this->getGender($sections['code']);
+            // get the gender
+            $this->getGender($extractedData['code']);
 
-        return [
-            'date_of_birth' => $this->dobHumanReadable($dateFormat), // get the date of birth
-            'state' => $this->getStateByCode($sections['state']), // get the state
-            'gender' => $this->gender, // get the gender
-        ];
+            return [
+                'date_of_birth' => $this->dobHumanReadable($dateFormat), // get the date of birth
+                'state' => $this->getStateByCode($extractedData['state']), // get the state
+                'gender' => $this->gender, // get the gender
+            ];
+        }
+
+        return false;
     }
 
     /**
@@ -150,7 +149,7 @@ class MyKad
      */
     private function split(?string $code = null): array
     {
-        if (! empty($code)) {
+        if (! empty($code) && $this->lengthIsValid($code)) {
             // split the number into 2 sections
             $firstSection = str($code)->split(6);
 

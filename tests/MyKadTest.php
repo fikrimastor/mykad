@@ -3,20 +3,20 @@
 use FikriMastor\MyKad\Facades\MyKad;
 
 const TEST_MYKAD = '010101-01-0101';
+const TEST_MYKAD_INVALID = '010101-01-01';
 
 it('can test mykad length is valid', function () {
 
     $mykad = MyKad::lengthIsValid(TEST_MYKAD);
 
-    expect($mykad)->toBeTrue(TEST_MYKAD.' length is valid');
+    $mykad ? expect($mykad)->toBeTrue(TEST_MYKAD.' length is valid') : expect($mykad)->toBeFalse(TEST_MYKAD.' length is invalid');
 });
 
 it('can test mykad length is invalid', function () {
 
-    $number = str()->random(13);
-    $mykad = MyKad::lengthIsValid($number);
+    $mykad = MyKad::lengthIsValid(TEST_MYKAD_INVALID);
 
-    expect($mykad)->toBeFalse($number.' length is invalid');
+    expect($mykad)->toBeFalse(TEST_MYKAD_INVALID.' length is invalid');
 });
 
 it('can test mykad output extraction is valid array', function () {
@@ -28,10 +28,9 @@ it('can test mykad output extraction is valid array', function () {
 
 it('can test mykad output extraction is invalid array', function () {
 
-    $number = str()->random(13);
-    $mykad = MyKad::extractMyKad($number);
+    $mykad = MyKad::extractMyKad(TEST_MYKAD_INVALID);
 
-    expect($mykad)->toBeFalse($number.' input is invalid');
+    expect($mykad)->toBeFalse(TEST_MYKAD_INVALID.' input is invalid');
 });
 
 it('can test mykad input birth date is valid', function () {
@@ -44,7 +43,7 @@ it('can test mykad input birth date is valid', function () {
 
 it('can test mykad input birth date is invalid', function () {
 
-    $number = MyKad::sanitize(str()->random(13));
+    $number = MyKad::sanitize(TEST_MYKAD_INVALID);
     $mykad = MyKad::birthDateIsValid($number);
 
     expect($mykad)->toBeFalse($number.' input is invalid');
@@ -60,7 +59,7 @@ it('can test mykad input character is valid', function () {
 
 it('can test mykad input character is invalid', function () {
 
-    $number = MyKad::sanitize(str()->random(13));
+    $number = '0909!';
     $mykad = MyKad::characterIsValid($number);
 
     expect($mykad)->toBeFalse($number.' input is invalid');
@@ -68,15 +67,14 @@ it('can test mykad input character is invalid', function () {
 
 it('can test mykad input state is valid', function () {
 
-    $number = MyKad::sanitize(TEST_MYKAD);
-    $mykad = MyKad::stateIsValid($number);
+    $mykad = MyKad::stateIsValid(TEST_MYKAD);
 
-    expect($mykad)->toBeTrue($number.' input is valid');
+    expect($mykad)->toBeTrue(TEST_MYKAD.' input is valid');
 });
 
 it('can test mykad input state is invalid', function () {
 
-    $number = MyKad::sanitize(str()->random(13));
+    $number = '0909!';
     $mykad = MyKad::stateIsValid($number);
 
     expect($mykad)->toBeFalse($number.' input is invalid');
