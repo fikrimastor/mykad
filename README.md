@@ -56,7 +56,7 @@ use FikriMastor\MyKad\Facades\MyKad;
 
 echo MyKad::sanitize('010101-01-0101'); // '010101010101'
 
-echo MyKad::extractMyKad('010101010101'); 
+echo MyKad::extract('010101010101'); 
 //[
 //  "date_of_birth" => "1 January 2001"
 //  "state" => "Johor"

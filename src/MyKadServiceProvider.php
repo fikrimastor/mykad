@@ -17,9 +17,6 @@ class MyKadServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('mykad')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_mykad_table')
-            ->hasCommand(MyKadCommand::class);
+            ->hasConfigFile();
     }
 }
