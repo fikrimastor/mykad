@@ -2,7 +2,8 @@
 
 namespace FikriMastor\MyKad;
 
-use Illuminate\Support\{Arr, Str};
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class MyKad
 {
@@ -18,9 +19,6 @@ class MyKad
 
     /**
      * Sanitize MyKad Details
-     *
-     * @param  string  $myKad
-     * @return string
      */
     public function sanitize(string $myKad): string
     {
@@ -37,9 +35,6 @@ class MyKad
 
     /**
      * Check MyKad Character is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function characterIsValid(string $myKad): bool
     {
@@ -48,9 +43,6 @@ class MyKad
 
     /**
      * Check MyKad birth date is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function birthDateIsValid(string $myKad): bool
     {
@@ -67,9 +59,6 @@ class MyKad
 
     /**
      * Check MyKad state is Valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function stateIsValid(string $myKad): bool
     {
@@ -80,10 +69,6 @@ class MyKad
 
     /**
      * Extract the details from the MyKad
-     *
-     * @param  string  $myKad
-     * @param  string|null  $dateFormat
-     * @return array|bool
      */
     public function extract(string $myKad, ?string $dateFormat = 'j F Y'): array|bool
     {
@@ -98,9 +83,6 @@ class MyKad
 
     /**
      * Replace the unwanted characters
-     *
-     * @param  string  $myKad
-     * @return string
      */
     private function trimReplace(string $myKad): string
     {
@@ -126,9 +108,6 @@ class MyKad
 
     /**
      * Get MyKad Length
-     *
-     * @param  string  $myKad
-     * @return int
      */
     private function myKadLength(string $myKad): int
     {
