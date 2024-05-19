@@ -2,6 +2,8 @@
 
 namespace FikriMastor\MyKad;
 
+use Illuminate\Support\Arr;
+
 class MyKad
 {
     /**
@@ -17,25 +19,112 @@ class MyKad
     /**
      * Extract MyKad Number
      */
-    private function extractMyKad(string $myKad): string
+    private function trimReplace(string $myKad): string
     {
-        return str($myKad)->replaceMatches('/[^0-9]/', '');
+        return str(trim($myKad))->replaceMatches('/[^a-zA-Z0-9]/', '');
+    }
+
+    /**
+     * Sanitize MyKad Details
+     *
+     * @param  string  $myKad
+     * @return string
+     */
+    public function sanitize(string $myKad): string
+    {
+        return $this->trimReplace($myKad);
     }
 
     /**
      * Get MyKad Length
+     *
+     * @param  string  $myKad
+     * @return int
      */
     private function myKadLength(string $myKad): int
     {
-        return strlen($myKad);
+        return strlen($this->sanitize($myKad));
     }
 
     /**
      * Check MyKad Length is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
-    public function myKadLengthIsValid(string $myKad): bool
+    public function lengthIsValid(string $myKad): bool
     {
-        return $this->myKadLength($myKad) === 12;
+        $number = $this->sanitize($myKad);
+
+        return $this->myKadLength($number) === 12;
+    }
+
+    /**
+     * Check MyKad Character is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
+     */
+    public function characterIsValid(string $myKad): bool
+    {
+        return is_numeric($myKad);
+    }
+
+    /**
+     * Check MyKad birth date is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
+     */
+    public function birthDateIsValid(string $myKad): bool
+    {
+        $extractedData = $this->split($myKad);
+
+        if (Arr::exists($extractedData, 'dob')) {
+            $dob = $this->getDob($extractedData['dob']);
+
+            // if the date is not empty, then check if it is valid date
+            return !empty($dob) && checkdate($dob['month'], $dob['day'], $dob['year']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check MyKad birth date is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
+     */
+    public function stateIsValid(string $myKad): bool
+    {
+        $extractedData = $this->extractMyKad($myKad);
+
+        return is_array($extractedData) && Arr::exists($extractedData, 'state');
+    }
+
+    /**
+     * Get the date of birth from IC number
+     *
+     * @param  string  $myKad
+     * @param  string|null  $dateFormat
+     * @return array|bool
+     */
+    public function extractMyKad(string $myKad, string|null $dateFormat = 'j F Y'): array|bool
+    {
+        // sanitize characters
+        $myKadNo = $this->sanitize($myKad);
+
+        if (!empty($myKadNo)) {
+            // if the numbers is less than 12 digits
+            if (! $this->lengthIsValid($myKadNo)) {
+                return false;
+            }
+
+            return $this->getData($myKadNo, $dateFormat);
+        }
+
+        return false;
     }
 
     /**
@@ -58,7 +147,7 @@ class MyKad
 
         return [
             'date_of_birth' => $this->dobHumanReadable($dateFormat), // get the date of birth
-            'state' => $this->getState($sections['state']), // get the state
+            'state' => $this->getStateByCode($sections['state']), // get the state
             'gender' => $this->gender, // get the gender
         ];
     }
@@ -71,7 +160,9 @@ class MyKad
      */
     private function dobHumanReadable(?string $dateFormat = 'j F Y'): string|bool
     {
-        return $this->dob ? date($dateFormat, (int) $this->dob) : $this->dob;
+        return $this->dob
+            ? date($dateFormat, (int) $this->dob)
+            : $this->dob;
     }
 
     /**
@@ -82,30 +173,27 @@ class MyKad
      */
     private function split(?string $code = null): array
     {
-        $output = [];
-
         if (! empty($code)) {
-            // the output array
-            $output = [];
-
             // split the number into 2 sections
-            $sect = str($code)->split(6);
+            $firstSection = str($code)->split(6);
 
             // the DOB section
-            $output['dob'] = $sect[0];
+            $dob = $firstSection[0];
 
             // now get the state code
-            $other = str($sect[1])->split(2);
+            $secondSection = str($firstSection[1])->split(2);
 
             // assign it to the output
-            $output['state'] = $other[0];
+            $state = $secondSection[0];
 
             // then, from the last array item in $code, get
             // the last item to be use when checking for gender
-            $output['code'] = $other[1].$other[2];
+            $code = $secondSection[1].$secondSection[2];
+
+            return compact('dob', 'state', 'code');
         }
 
-        return $output;
+        return [];
     }
 
     /**
@@ -138,16 +226,35 @@ class MyKad
     }
 
     /**
+     * Get state based on the 2 digits code
+     * Source: https://www.jpn.gov.my/my/kod-negeri
+     *
+     * @param  string  $code  The 2 digits state code
+     * @return string The state name
+     */
+    private function getStateByCode(string $code): string
+    {
+        $states = config('mykad.states-code');
+
+        return Arr::exists($states, $code)
+            ? $states[$code]
+            : 'Others';
+    }
+
+    /**
      * Get gender based on the last 4 digits code
      *
      * @param  string|null  $code  The 4 digits IC number
      */
     private function getGender(?string $code = null)
     {
-        if (! empty($code)) {
+        $number = (int) $code;
+
+        // check if the code is an integer
+        if (! empty($code) && is_int($number)) {
             // basically, the last digit will determine the
             // gender; odd for Male and even for Female
-            $this->gender = $code % 2 === 0 ? 'Female' : 'Male';
+            $this->gender = $number % 2 === 0 ? 'Female' : 'Male';
         }
     }
 
@@ -156,7 +263,7 @@ class MyKad
      *
      * @param  string|null  $code  The first 6 digits IC number
      */
-    private function getDob(?string $code = null): void
+    private function getDob(?string $code = null): array
     {
         if (! empty($code)) {
             // split it into 3 section, 2 digits per section
@@ -181,6 +288,10 @@ class MyKad
             // now convert it into the string and assign it to
             // our variable
             $this->dob = strtotime($year.'-'.$month.'-'.$day);
+
+            return compact('day', 'month', 'year');
         }
+
+        return [];
     }
 }
