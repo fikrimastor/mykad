@@ -94,5 +94,5 @@ return [
 
         // Negeri Tidak Diketahui
         '82' => 'Unknown',
-    ]
+    ],
 ];
