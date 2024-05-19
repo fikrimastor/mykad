@@ -64,12 +64,11 @@ class MyKad
     public function birthDateIsValid(string $myKad): bool
     {
         $extractedData = $this->split($myKad);
-
         if (Arr::exists($extractedData, 'dob')) {
             $dob = $this->getDob($extractedData['dob']);
 
             // if the date is not empty, then check if it is valid date
-            return ! empty($dob) && checkdate($dob['month'], $dob['day'], $dob['year']);
+            return $this->dob && checkdate($dob['month'], $dob['day'], $dob['year']);
         }
 
         return false;
