@@ -2,6 +2,15 @@
 
 All notable changes to `mykad` will be documented in this file.
 
+## 0.04 - 2024-05-20
+
+### What's Changed
+
+* update: changes to force push in update-changelog.yml by @fikrimastor in https://github.com/fikrimastor/mykad/pull/5
+* update: added new method format for formatting the MyKad number by @fikrimastor in https://github.com/fikrimastor/mykad/pull/6
+
+**Full Changelog**: https://github.com/fikrimastor/mykad/compare/0.03...0.04
+
 ## 0.0.2 - 2024-05-19
 
 ### What's Changed
