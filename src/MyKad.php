@@ -2,8 +2,7 @@
 
 namespace FikriMastor\MyKad;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Support\{Arr, Str};
 
 class MyKad
 {
@@ -19,21 +18,30 @@ class MyKad
 
     /**
      * State Code
+     *
+     * @var string|null
      */
     private ?string $stateCode = null;
 
     /**
      * Date of Birth Code
+     *
+     * @var string|null
      */
     private ?string $dateOfBirthCode = null;
 
     /**
      * Gender Code
+     *
+     * @var string|null
      */
     private ?string $genderCode = null;
 
     /**
      * Sanitize MyKad Details
+     *
+     * @param  string  $myKad
+     * @return string
      */
     public function sanitize(string $myKad): string
     {
@@ -42,6 +50,9 @@ class MyKad
 
     /**
      * Check MyKad Length is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function lengthIsValid(string $myKad): bool
     {
@@ -50,6 +61,9 @@ class MyKad
 
     /**
      * Check MyKad Character is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function characterIsValid(string $myKad): bool
     {
@@ -58,6 +72,9 @@ class MyKad
 
     /**
      * Check MyKad birth date is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function birthDateIsValid(string $myKad): bool
     {
@@ -74,6 +91,9 @@ class MyKad
 
     /**
      * Check MyKad state is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function stateIsValid(string $myKad): bool
     {
@@ -84,6 +104,10 @@ class MyKad
 
     /**
      * Extract the details from the MyKad
+     *
+     * @param  string  $myKad
+     * @param  string|null  $dateFormat
+     * @return array|bool
      */
     public function extract(string $myKad, ?string $dateFormat = 'j F Y'): array|bool
     {
@@ -98,6 +122,9 @@ class MyKad
 
     /**
      * Format MyKad with dashes
+     *
+     * @param  string  $myKad
+     * @return string
      */
     public function format(string $myKad): string
     {
@@ -106,6 +133,9 @@ class MyKad
 
     /**
      * Format MyKad with dashes
+     *
+     * @param  string  $myKad
+     * @return string
      */
     public function formatWithoutDash(string $myKad): string
     {
@@ -114,6 +144,9 @@ class MyKad
 
     /**
      * Check if the MyKad is valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function isValid(string $myKad): bool
     {
@@ -130,6 +163,9 @@ class MyKad
 
     /**
      * Replace the unwanted characters
+     *
+     * @param  string  $myKad
+     * @return string
      */
     private function trimReplace(string $myKad): string
     {
@@ -155,6 +191,9 @@ class MyKad
 
     /**
      * Get MyKad Length
+     *
+     * @param  string  $myKad
+     * @return int
      */
     private function myKadLength(string $myKad): int
     {
@@ -252,7 +291,7 @@ class MyKad
             // the last item to be use when checking for gender
             $this->genderCode = $secondSection[1].$secondSection[2];
 
-            $formattedMyKad = $this->dateOfBirthCode.'-'.$this->stateCode.'-'.$this->genderCode;
+            $formattedMyKad = $this->dateOfBirthCode . '-' . $this->stateCode . '-' . $this->genderCode;
         }
 
         return $formattedMyKad;
