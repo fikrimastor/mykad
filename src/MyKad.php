@@ -114,9 +114,6 @@ class MyKad
 
     /**
      * Check if the MyKad is valid
-     *
-     * @param  string  $myKad
-     * @return bool
      */
     public function isValid(string $myKad): bool
     {
