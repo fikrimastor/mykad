@@ -1,6 +1,6 @@
 {
     "name": "fikrimastor/mykad",
-    "description": "Mykad package is a laravel package, purposely to validate, parse, generate, and format Malaysian Identity Card (MyKad) numbers.",
+    "description": "Mykad package is a laravel package, purposely to validate, parse, and format Malaysian Identity Card (MyKad) numbers.",
     "keywords": [
         "FikriMastor",
         "laravel",
@@ -34,8 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "FikriMastor\\MyKad\\": "src/",
-            "FikriMastor\\MyKad\\Database\\Factories\\": "database/factories/"
+            "FikriMastor\\MyKad\\": "src/"
         }
     },
     "autoload-dev": {
