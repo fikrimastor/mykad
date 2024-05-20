@@ -13,22 +13,22 @@ class IsMyKad implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $identityNumber = \FikriMastor\MyKad\Facades\MyKad::sanitize($value);
+        $identityNumber = MyKad::sanitize($value);
 
         if (! MyKad::characterIsValid($identityNumber)) {
-            $fail('The :attribute is invalid character for mykad.');
+            $fail('mykad::messages.invalid_character')->translate(compact('attribute', 'value'));
         }
 
         if (! MyKad::lengthIsValid($identityNumber)) {
-            $fail('The :attribute must be 12 characters.');
+            $fail('mykad::messages.invalid_length')->translate(compact('attribute', 'value'));
         }
 
         if (! MyKad::birthDateIsValid($identityNumber)) {
-            $fail('The :attribute does not contains valid birth date.');
+            $fail('mykad::messages.invalid_birth_date')->translate(compact('attribute', 'value'));
         }
 
         if (! MyKad::stateIsValid($identityNumber)) {
-            $fail('The :attribute does not contains valid state.');
+            $fail('mykad::messages.invalid_state')->translate(compact('attribute', 'value'));
         }
     }
 }

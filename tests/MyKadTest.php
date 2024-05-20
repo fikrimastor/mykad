@@ -1,6 +1,9 @@
 <?php
 
 use FikriMastor\MyKad\Facades\MyKad;
+use FikriMastor\MyKad\Rules\IsMyKad;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Validator;
 
 const TEST_MYKAD = '010101-01-0101';
 const TEST_MYKAD_INVALID = '01010-01-01';
@@ -78,4 +81,52 @@ it('can test mykad input state is invalid', function () {
     $mykad = MyKad::stateIsValid($number);
 
     expect($mykad)->toBeFalse($number.' input is invalid');
+});
+
+it('can test mykad input is invalid', function () {
+
+    $number = '0909!';
+    $mykad = MyKad::isValid($number);
+
+    expect($mykad)->toBeFalse($number.' input is invalid');
+});
+
+it('can test mykad input is valid', function () {
+
+    $number = TEST_MYKAD;
+    $mykad = MyKad::isValid($number);
+
+    expect($mykad)->toBeTrue($number.' input is valid');
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->passes())->toBeTrue($number.' input is valid');
+    expect($validator->messages()->first())->toEqual('');
+});
+
+it('can test mykad input invalid character length validation message', function () {
+    $number = TEST_MYKAD_INVALID;
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->fails())->toBeTrue($number.' input is invalid');
+    expect($validator->messages()->first())->toEqual('The mykad must be 12 characters.');
+});
+
+it('can test mykad input invalid character validation message', function () {
+    $number = str()->random(12);
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->fails())->toBeTrue($number.' input is invalid');
+    expect($validator->messages()->first())->toEqual('The mykad is invalid character for MyKad.');
+});
+
+it('can test mykad input invalid birth date validation message', function () {
+    $number = '010132-01-0101';
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->fails())->toBeTrue($number.' input is invalid');
+    expect($validator->messages()->first())->toEqual('The mykad does not contains valid birth date.');
 });
