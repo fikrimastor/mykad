@@ -79,3 +79,19 @@ it('can test mykad input state is invalid', function () {
 
     expect($mykad)->toBeFalse($number.' input is invalid');
 });
+
+it('can test mykad input is invalid', function () {
+
+    $number = '0909!';
+    $mykad = MyKad::isValid($number);
+
+    expect($mykad)->toBeFalse($number.' input is invalid');
+});
+
+it('can test mykad input is valid', function () {
+
+    $number = TEST_MYKAD;
+    $mykad = MyKad::isValid($number);
+
+    expect($mykad)->toBeTrue($number.' input is valid');
+});

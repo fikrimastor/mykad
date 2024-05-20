@@ -18,7 +18,31 @@ class MyKad
     protected int|bool $dob = false;
 
     /**
+     * State Code
+     *
+     * @var string|null
+     */
+    private ?string $stateCode = null;
+
+    /**
+     * Date of Birth Code
+     *
+     * @var string|null
+     */
+    private ?string $dateOfBirthCode = null;
+
+    /**
+     * Gender Code
+     *
+     * @var string|null
+     */
+    private ?string $genderCode = null;
+
+    /**
      * Sanitize MyKad Details
+     *
+     * @param  string  $myKad
+     * @return string
      */
     public function sanitize(string $myKad): string
     {
@@ -27,6 +51,9 @@ class MyKad
 
     /**
      * Check MyKad Length is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function lengthIsValid(string $myKad): bool
     {
@@ -35,6 +62,9 @@ class MyKad
 
     /**
      * Check MyKad Character is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function characterIsValid(string $myKad): bool
     {
@@ -43,6 +73,9 @@ class MyKad
 
     /**
      * Check MyKad birth date is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function birthDateIsValid(string $myKad): bool
     {
@@ -59,6 +92,9 @@ class MyKad
 
     /**
      * Check MyKad state is Valid
+     *
+     * @param  string  $myKad
+     * @return bool
      */
     public function stateIsValid(string $myKad): bool
     {
@@ -69,6 +105,10 @@ class MyKad
 
     /**
      * Extract the details from the MyKad
+     *
+     * @param  string  $myKad
+     * @param  string|null  $dateFormat
+     * @return array|bool
      */
     public function extract(string $myKad, ?string $dateFormat = 'j F Y'): array|bool
     {
@@ -82,7 +122,45 @@ class MyKad
     }
 
     /**
+     * Format MyKad with dashes
+     *
+     * @param  string  $myKad
+     * @return string
+     */
+    public function format(string $myKad): string
+    {
+        return $this->formatting($myKad);
+    }
+
+    /**
+     * Format MyKad with dashes
+     *
+     * @param  string  $myKad
+     * @return string
+     */
+    public function formatWithoutDash(string $myKad): string
+    {
+        return $this->sanitize($this->formatting($myKad));
+    }
+
+    public function isValid(string $myKad): bool
+    {
+        $identityNumber = $this->sanitize($myKad);
+
+        return match (true) {
+            ! $this->lengthIsValid($identityNumber),
+            ! $this->characterIsValid($identityNumber),
+            ! $this->birthDateIsValid($identityNumber),
+            ! $this->stateIsValid($identityNumber) => false,
+            default => true,
+        };
+    }
+
+    /**
      * Replace the unwanted characters
+     *
+     * @param  string  $myKad
+     * @return string
      */
     private function trimReplace(string $myKad): string
     {
@@ -108,6 +186,9 @@ class MyKad
 
     /**
      * Get MyKad Length
+     *
+     * @param  string  $myKad
+     * @return int
      */
     private function myKadLength(string $myKad): int
     {
@@ -158,26 +239,57 @@ class MyKad
     private function split(?string $code = null): array
     {
         if (! empty($code) && $this->lengthIsValid($code)) {
-            // split the number into 2 sections
-            $firstSection = str($code)->split(6);
+            // formatting MyKad
+            $this->formatting($code);
 
-            // the DOB section
-            $dob = $firstSection[0];
+            // assign dob
+            $dob = $this->dateOfBirthCode;
 
-            // now get the state code
-            $secondSection = str($firstSection[1])->split(2);
+            // assign state
+            $state = $this->stateCode;
 
-            // assign it to the output
-            $state = $secondSection[0];
-
-            // then, from the last array item in $code, get
-            // the last item to be use when checking for gender
-            $code = $secondSection[1].$secondSection[2];
+            // assign gender code
+            $code = $this->genderCode;
 
             return compact('dob', 'state', 'code');
         }
 
         return [];
+    }
+
+    /**
+     * Formatting the MyKad
+     *
+     * @param  string  $myKad  The IC number
+     * @return string The formatted IC number
+     */
+    private function formatting(string $myKad): string
+    {
+        $formattedMyKad = $myKad;
+
+        if ($this->lengthIsValid($myKad)) {
+            $ic = $this->sanitize($myKad);
+
+            // split the number into 2 sections
+            $firstSection = Str::of($ic)->split(6);
+
+            // the DOB section
+            $this->dateOfBirthCode = $firstSection[0];
+
+            // now get the state code
+            $secondSection = Str::of($firstSection[1])->split(2);
+
+            // assign it to the output
+            $this->stateCode = $secondSection[0];
+
+            // then, from the last array item in $code, get
+            // the last item to be use when checking for gender
+            $this->genderCode = $secondSection[1].$secondSection[2];
+
+            $formattedMyKad = $this->dateOfBirthCode . '-' . $this->stateCode . '-' . $this->genderCode;
+        }
+
+        return $formattedMyKad;
     }
 
     /**

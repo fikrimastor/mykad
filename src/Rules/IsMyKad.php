@@ -13,7 +13,7 @@ class IsMyKad implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $identityNumber = \FikriMastor\MyKad\Facades\MyKad::sanitize($value);
+        $identityNumber = MyKad::sanitize($value);
 
         if (! MyKad::characterIsValid($identityNumber)) {
             $fail('The :attribute is invalid character for mykad.');
