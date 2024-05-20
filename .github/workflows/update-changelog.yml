@@ -17,12 +17,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          token: ${{ secrets.REPO_TOKEN }}
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@v1
         with:
           latest-version: ${{ github.event.release.name }}
           release-notes: ${{ github.event.release.body }}
+          token: ${{ secrets.REPO_TOKEN }}
 
       - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -31,3 +33,4 @@ jobs:
           commit_message: Update CHANGELOG
           push_options: --force
           file_pattern: CHANGELOG.md
+          token: ${{ secrets.REPO_TOKEN }}
