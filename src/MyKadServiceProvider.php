@@ -16,6 +16,7 @@ class MyKadServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('mykad')
-            ->hasConfigFile();
+            ->hasConfigFile()
+            ->hasTranslations();
     }
 }

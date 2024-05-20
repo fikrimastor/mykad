@@ -1,6 +1,9 @@
 <?php
 
 use FikriMastor\MyKad\Facades\MyKad;
+use FikriMastor\MyKad\Rules\IsMyKad;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Validator;
 
 const TEST_MYKAD = '010101-01-0101';
 const TEST_MYKAD_INVALID = '01010-01-01';
@@ -94,4 +97,20 @@ it('can test mykad input is valid', function () {
     $mykad = MyKad::isValid($number);
 
     expect($mykad)->toBeTrue($number.' input is valid');
+});
+
+it('can test mykad input invalid character validation message', function () {
+    Lang::addLines([
+        'messages.invalid_character' => ':attribute',
+    ], Lang::getLocale(), 'mykad');
+
+    $number = '0909!';
+    $rules = ['mykad' => new IsMyKad];
+
+    $input = ['mykad' => $number];
+
+    $fail = Validator::make($input, $rules);
+
+    expect($fail->fails())->toBeTrue($number.' input is invalid');
+//    expect($fail->messages())->toContainEqual('The mykad is invalid character for MyKad.');
 });

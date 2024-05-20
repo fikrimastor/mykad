@@ -16,19 +16,23 @@ class IsMyKad implements ValidationRule
         $identityNumber = MyKad::sanitize($value);
 
         if (! MyKad::characterIsValid($identityNumber)) {
-            $fail('The :attribute is invalid character for mykad.');
+//            $fail(trans('mykad::messages.invalid_character', compact('attribute', 'value')));
+            $fail('mykad::messages.invalid_character')->translate(compact('attribute', 'value'));
         }
 
         if (! MyKad::lengthIsValid($identityNumber)) {
-            $fail('The :attribute must be 12 characters.');
+//            $fail(trans('mykad::messages.invalid_length', compact('attribute', 'value')));
+            $fail('mykad::messages.invalid_length')->translate(compact('attribute', 'value'));
         }
 
         if (! MyKad::birthDateIsValid($identityNumber)) {
-            $fail('The :attribute does not contains valid birth date.');
+//            $fail(trans('mykad::messages.invalid_birth_date', compact('attribute', 'value')));
+            $fail('mykad::messages.invalid_birth_date')->translate(compact('attribute', 'value'));
         }
 
         if (! MyKad::stateIsValid($identityNumber)) {
-            $fail('The :attribute does not contains valid state.');
+//            $fail(trans('mykad::messages.invalid_state', compact('attribute', 'value')));
+            $fail('mykad::messages.invalid_state')->translate(compact('attribute', 'value'));
         }
     }
 }
