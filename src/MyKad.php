@@ -143,6 +143,12 @@ class MyKad
         return $this->sanitize($this->formatting($myKad));
     }
 
+    /**
+     * Check if the MyKad is valid
+     *
+     * @param  string  $myKad
+     * @return bool
+     */
     public function isValid(string $myKad): bool
     {
         $identityNumber = $this->sanitize($myKad);
