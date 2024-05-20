@@ -97,20 +97,36 @@ it('can test mykad input is valid', function () {
     $mykad = MyKad::isValid($number);
 
     expect($mykad)->toBeTrue($number.' input is valid');
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->passes())->toBeTrue($number.' input is valid');
+    expect($validator->messages()->first())->toEqual('');
+});
+
+it('can test mykad input invalid character length validation message', function () {
+    $number = TEST_MYKAD_INVALID;
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->fails())->toBeTrue($number.' input is invalid');
+    expect($validator->messages()->first())->toEqual('The mykad must be 12 characters.');
 });
 
 it('can test mykad input invalid character validation message', function () {
-    Lang::addLines([
-        'messages.invalid_character' => ':attribute',
-    ], Lang::getLocale(), 'mykad');
+    $number = str()->random(12);
 
-    $number = '0909!';
-    $rules = ['mykad' => new IsMyKad];
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
 
-    $input = ['mykad' => $number];
+    expect($validator->fails())->toBeTrue($number.' input is invalid');
+    expect($validator->messages()->first())->toEqual('The mykad is invalid character for MyKad.');
+});
 
-    $fail = Validator::make($input, $rules);
+it('can test mykad input invalid birth date validation message', function () {
+    $number = '010132-01-0101';
 
-    expect($fail->fails())->toBeTrue($number.' input is invalid');
-//    expect($fail->messages())->toContainEqual('The mykad is invalid character for MyKad.');
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->fails())->toBeTrue($number.' input is invalid');
+    expect($validator->messages()->first())->toEqual('The mykad does not contains valid birth date.');
 });
