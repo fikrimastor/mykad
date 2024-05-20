@@ -2,6 +2,14 @@
 
 All notable changes to `mykad` will be documented in this file.
 
+## 0.03 - 2024-05-20
+
+### What's Changed
+
+* update: remove unused code and improve code summary by @fikrimastor in https://github.com/fikrimastor/mykad/pull/4
+
+**Full Changelog**: https://github.com/fikrimastor/mykad/compare/0.0.2...0.03
+
 ## 0.04 - 2024-05-20
 
 ### What's Changed
