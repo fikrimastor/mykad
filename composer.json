@@ -2,8 +2,9 @@
     "name": "fikrimastor/mykad",
     "description": "Mykad package is a laravel package, purposely to validate, parse, and format Malaysian Identity Card (MyKad) numbers.",
     "keywords": [
-        "FikriMastor",
+        "fikrimastor",
         "laravel",
+        "laravel-package",
         "mykad"
     ],
     "homepage": "https://github.com/fikrimastor/mykad",
