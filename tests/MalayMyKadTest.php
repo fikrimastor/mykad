@@ -42,3 +42,13 @@ it('can test mykad input invalid input length validation message in Malay', func
     expect($validator->fails())->toBeTrue($number.' input is invalid');
     expect($validator->messages()->first())->toEqual('mykad mesti mempunyai 12 aksara.');
 });
+
+it('can test mykad input is valid, no validation triggered', function () {
+
+    $number = '010101-01-0101';
+
+    $validator = Validator::make(['mykad' => $number], ['mykad' => new IsMyKad]);
+
+    expect($validator->passes())->toBeTrue($number.' input is valid');
+    expect($validator->messages()->first())->toEqual('');
+});
