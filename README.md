@@ -1,9 +1,11 @@
-# Mykad package is a laravel package, purposely to validate, parse, and extract Malaysian Identity Card (MyKad) numbers.
+# Validate MyKad with Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/fikrimastor/mykad.svg?style=flat-square)](https://packagist.org/packages/fikrimastor/mykad)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/fikrimastor/mykad/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/fikrimastor/mykad/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/fikrimastor/mykad/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/fikrimastor/mykad/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/fikrimastor/mykad.svg?style=flat-square)](https://packagist.org/packages/fikrimastor/mykad)
+
+MyKad is a laravel package, purposely to validate, parse, and extract Malaysian Identity Card (MyKad) numbers.
 
 ## Installation
 
