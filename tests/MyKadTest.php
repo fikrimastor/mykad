@@ -2,7 +2,6 @@
 
 use FikriMastor\MyKad\Facades\MyKad;
 use FikriMastor\MyKad\Rules\IsMyKad;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Validator;
 
 const TEST_MYKAD = '010101-01-0101';

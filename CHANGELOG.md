@@ -2,10 +2,6 @@
 
 All notable changes to `mykad` will be documented in this file.
 
-## v1.0.2 - 2024-05-22
-
-**Full Changelog**: https://github.com/fikrimastor/mykad/compare/v1.0.1...v1.0.2
-
 ## v1.0.1 - 2024-05-20
 
 ### What's Changed
@@ -13,14 +9,6 @@ All notable changes to `mykad` will be documented in this file.
 * update: attempt to fix failed to update changelog by @fikrimastor in https://github.com/fikrimastor/mykad/pull/10
 
 **Full Changelog**: https://github.com/fikrimastor/mykad/compare/v1.0.0...v1.0.1
-
-## 0.03 - 2024-05-20
-
-### What's Changed
-
-* update: remove unused code and improve code summary by @fikrimastor in https://github.com/fikrimastor/mykad/pull/4
-
-**Full Changelog**: https://github.com/fikrimastor/mykad/compare/0.0.2...0.03
 
 ## 0.04 - 2024-05-20
 
@@ -30,6 +18,14 @@ All notable changes to `mykad` will be documented in this file.
 * update: added new method format for formatting the MyKad number by @fikrimastor in https://github.com/fikrimastor/mykad/pull/6
 
 **Full Changelog**: https://github.com/fikrimastor/mykad/compare/0.03...0.04
+
+## 0.03 - 2024-05-20
+
+### What's Changed
+
+* update: remove unused code and improve code summary by @fikrimastor in https://github.com/fikrimastor/mykad/pull/4
+
+**Full Changelog**: https://github.com/fikrimastor/mykad/compare/0.0.2...0.03
 
 ## 0.0.2 - 2024-05-19
 
