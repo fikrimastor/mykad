@@ -1,6 +1,5 @@
 <?php
 
-use FikriMastor\MyKad\Facades\MyKad;
 use FikriMastor\MyKad\Rules\IsMyKad;
 use Illuminate\Support\Facades\Validator;
 
