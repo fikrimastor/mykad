@@ -2,6 +2,16 @@
 
 All notable changes to `mykad` will be documented in this file.
 
+## v1.0.3 - 2024-05-22
+
+### What's Changed
+
+* Feature/8 bahasa melayu #8 >>> dev by @fikrimastor in https://github.com/fikrimastor/mykad/pull/11
+* feat: update composer.json resolve #8 by @fikrimastor in https://github.com/fikrimastor/mykad/pull/12
+* Dev >>> Main, Version 1.0.2 by @fikrimastor in https://github.com/fikrimastor/mykad/pull/13
+
+**Full Changelog**: https://github.com/fikrimastor/mykad/compare/v1.0.2...v1.0.3
+
 ## v1.0.1 - 2024-05-20
 
 ### What's Changed
