@@ -2,6 +2,10 @@
 
 All notable changes to `mykad` will be documented in this file.
 
+## v1.0.2 - 2024-05-22
+
+**Full Changelog**: https://github.com/fikrimastor/mykad/compare/v1.0.1...v1.0.2
+
 ## v1.0.1 - 2024-05-20
 
 ### What's Changed
