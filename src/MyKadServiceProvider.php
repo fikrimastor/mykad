@@ -2,6 +2,7 @@
 
 namespace FikriMastor\MyKad;
 
+use FikriMastor\MyKad\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -17,6 +18,7 @@ class MyKadServiceProvider extends PackageServiceProvider
         $package
             ->name('mykad')
             ->hasConfigFile()
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasConsoleCommand(InstallCommand::class);
     }
 }
