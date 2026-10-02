@@ -2,14 +2,14 @@ name: PHPStan
 
 on:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
-      - '.github/workflows/phpstan.yml'
+  pull_request:
 
 jobs:
   phpstan:
     name: phpstan
+    # PRs from this repo are already covered by the push run on the same commit;
+    # only PRs from forks (which never trigger a push here) need the PR run.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
